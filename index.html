@@ -1,40 +1,1053 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>JJ Auto Rescue</title>
-<style>
-body{font-family:Arial;margin:0;padding:0}
-header{background:#111;color:white;padding:40px;text-align:center}
-section{padding:40px}
-button{padding:12px 20px;background:#0077cc;color:white;border:none}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JJ Auto Rescue</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1a2f;
+      --panel: rgba(255,255,255,0.05);
+      --panel-2: rgba(255,255,255,0.03);
+      --text: #edf4ff;
+      --muted: #a8b9d7;
+      --line: rgba(255,255,255,0.08);
+      --accent: #1e90ff;
+      --accent-2: #56c2ff;
+      --accent-soft: rgba(30,144,255,0.12);
+      --success: #22c55e;
+      --shadow: 0 24px 60px rgba(0,0,0,.34);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top center, rgba(86,194,255,0.08), transparent 28%),
+        linear-gradient(180deg, #091120 0%, #08111f 45%, #0a1425 100%);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(8,17,31,0.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 10px 22px rgba(0,0,0,.24);
+      border: 1px solid rgba(255,255,255,.1);
+      background: #06101d;
+    }
+
+    .logo-fallback {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      letter-spacing: .5px;
+      color: white;
+      background: linear-gradient(135deg, #0c1c35, #12325f);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 22px rgba(0,0,0,.24);
+      flex: 0 0 50px;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--muted);
+      transition: .2s ease;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 14px 34px rgba(30,144,255,.28);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.06);
+    }
+
+    .hero {
+      padding: 76px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .service-card,
+    .info-card,
+    .testimonial,
+    .form-panel,
+    .feature-box,
+    .difference-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 42px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03)),
+        radial-gradient(circle at 80% 10%, rgba(86,194,255,.18), transparent 30%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(30,144,255,.12);
+      color: #d7efff;
+      border: 1px solid rgba(86,194,255,.24);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(36px, 6vw, 62px);
+      line-height: 1.02;
+      letter-spacing: -1.4px;
+      max-width: 780px;
+    }
+
+    .lead {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 690px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .point {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--line);
+    }
+
+    .point strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 17px;
+    }
+
+    .point span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+    }
+
+    .logo-card {
+      padding: 28px;
+      text-align: center;
+    }
+
+    .logo-card img {
+      width: min(100%, 320px);
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 18px 34px rgba(0,0,0,.35));
+    }
+
+    .logo-card h3 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .logo-card p,
+    .report-card p,
+    .service-card p,
+    .info-card p,
+    .testimonial p,
+    .difference-card p,
+    .form-panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .report-card {
+      padding: 24px;
+    }
+
+    .report-preview {
+      margin-top: 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fdfefe, #eef4fb);
+      color: #0f172a;
+      padding: 18px;
+    }
+
+    .report-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .report-head strong {
+      color: #0b66d0;
+      font-size: 18px;
+    }
+
+    .report-head span {
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .report-item {
+      background: #f8fbff;
+      border: 1px solid #dbe7f4;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .report-item small {
+      display: block;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .report-item strong {
+      color: #0f172a;
+    }
+
+    section {
+      padding: 28px 0 14px;
+      scroll-margin-top: 92px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -.9px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .service-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -70px -70px auto;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(86,194,255,.12), transparent 65%);
+      pointer-events: none;
+    }
+
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    .service-card h3 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.15;
+    }
+
+    .price {
+      font-weight: 900;
+      color: #d6eeff;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    .list {
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      display: flex;
+      gap: 10px;
+      color: #dde8fa;
+      font-size: 15px;
+    }
+
+    .tick {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent-soft);
+      color: #bfe8ff;
+      border: 1px solid rgba(86,194,255,.18);
+      flex: 0 0 22px;
+      font-size: 13px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    .how-grid,
+    .difference-grid,
+    .testimonials-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .how-grid { grid-template-columns: repeat(4, 1fr); }
+    .difference-grid { grid-template-columns: repeat(3, 1fr); }
+    .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+
+    .info-card,
+    .testimonial,
+    .difference-card {
+      padding: 22px;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: rgba(30,144,255,.13);
+      border: 1px solid rgba(86,194,255,.18);
+      color: #d7f1ff;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .info-card h3,
+    .difference-card h3,
+    .testimonial h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .stars {
+      color: #ffd166;
+      margin-bottom: 12px;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .testimonial footer {
+      margin-top: 16px;
+      color: #dbe8fb;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .form-panel {
+      padding: 26px;
+    }
+
+    .form-panel h3 {
+      margin: 0 0 8px;
+      font-size: 29px;
+      line-height: 1.15;
+    }
+
+    .callout {
+      margin: 0 0 18px;
+      padding: 15px 16px;
+      border-radius: 16px;
+      background: rgba(30,144,255,.1);
+      color: #dff3ff;
+      border: 1px solid rgba(86,194,255,.2);
+      font-size: 14px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #e9f2ff;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 14px;
+      font: inherit;
+      outline: none;
+      transition: .2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(86,194,255,.5);
+      box-shadow: 0 0 0 4px rgba(30,144,255,.11);
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .checks {
+      display: grid;
+      gap: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255,255,255,.08);
+    }
+
+    .check:first-child { border-top: 0; padding-top: 0; }
+
+    .check input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent);
+    }
+
+    .mini-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .policy-stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .feature-box {
+      padding: 16px;
+    }
+
+    .feature-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    footer {
+      padding: 38px 0 52px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .booking-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .difference-grid,
+      .testimonials-grid,
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 14px; }
+      .hero-main,
+      .logo-card,
+      .report-card,
+      .service-card,
+      .info-card,
+      .testimonial,
+      .form-panel,
+      .difference-card { padding: 20px; }
+      .hero-points,
+      .services-grid,
+      .how-grid,
+      .difference-grid,
+      .testimonials-grid,
+      .grid-2,
+      .report-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 44px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="topbar">
+    <div class="container">
+      <nav>
+        <a href="#home" class="brand">
+          <img src="logo.png" alt="JJ Auto Rescue logo" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span class="logo-fallback">JJ</span>
+          <span class="brand-text">
+            JJ Auto Rescue
+            <small>Diagnostics • Inspections • Reports</small>
+          </span>
+        </a>
 
-<header>
-<h1>JJ Auto Rescue</h1>
-<p>Mobile Vehicle Diagnostics & Inspections</p>
-<button>Book Appointment</button>
-</header>
+        <div class="nav-links">
+          <a href="#services">Services</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#why-us">Why Us</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#book-now">Book Now</a>
+          <a href="#book-now" class="btn btn-primary" onclick="document.getElementById('book-now').scrollIntoView({behavior:'smooth'}); return false;">Book Appointment</a>
+        </div>
+      </nav>
+    </div>
+  </div>
 
-<section>
-<h2>Services</h2>
-<p>Check Engine Light Diagnosis</p>
-<p>Pre-Purchase Inspection</p>
-<p>Vehicle Health Check</p>
-<p>Noise Diagnosis</p>
-</section>
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-card hero-main">
+          <div class="eyebrow">Mobile vehicle diagnostics with a premium feel</div>
+          <h1>Get a clear answer before spending money on repairs.</h1>
+          <p class="lead">JJ Auto Rescue helps drivers understand what is going on with their car through flat-rate diagnostics, pre-purchase inspections, and professional written reports. This is built to feel more trustworthy and organized than a typical mobile mechanic visit.</p>
+          <div class="hero-actions">
+            <a href="#book-now" class="btn btn-primary" onclick="document.getElementById('book-now').scrollIntoView({behavior:'smooth'}); return false;">Book Diagnostic</a>
+            <a href="#services" class="btn btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'}); return false;">Explore Services</a>
+          </div>
 
-<section>
-<h2>How It Works</h2>
-<p>Book online → Pay → We diagnose your vehicle → Receive diagnostic report</p>
-</section>
+          <div class="hero-points">
+            <div class="point">
+              <strong>Flat pricing</strong>
+              <span>Clear service pricing up front.</span>
+            </div>
+            <div class="point">
+              <strong>Continue to payment</strong>
+              <span>Appointments are confirmed after payment.</span>
+            </div>
+            <div class="point">
+              <strong>PDF report included</strong>
+              <span>Customers leave with documented findings.</span>
+            </div>
+          </div>
+        </div>
 
-<section>
-<h2>Testimonials</h2>
-<p>"Very knowledgeable and professional."</p>
-</section>
+        <div class="hero-side">
+          <div class="logo-card">
+            <img src="logo.png" alt="JJ Auto Rescue logo" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<div style=&quot;width:min(100%,320px);aspect-ratio:1/1;border-radius:50%;display:grid;place-items:center;font-size:48px;font-weight:900;letter-spacing:1px;color:white;background:linear-gradient(135deg,#0c1c35,#12325f);margin:0 auto 18px;box-shadow:0 18px 34px rgba(0,0,0,.35);&quot;>JJ</div>');">
+            <h3>JJ Auto Rescue</h3>
+            <p>A cleaner, more professional mobile diagnostic experience with a stronger car-service identity and modern automotive look.</p>
+          </div>
 
+          <div class="report-card hero-card">
+            <div class="eyebrow" style="margin-bottom:12px;">Sample Report</div>
+            <p>This is one of your biggest advantages. Customers do not just hear a quick opinion — they receive a proper summary they can keep and use.</p>
+            <div class="report-preview">
+              <div class="report-head">
+                <div>
+                  <strong>JJ Auto Rescue</strong>
+                  <span>Vehicle Diagnostic Report</span>
+                </div>
+                <span>Mar 2026</span>
+              </div>
+              <div class="report-grid">
+                <div class="report-item">
+                  <small>Vehicle</small>
+                  <strong>2016 Honda Civic</strong>
+                </div>
+                <div class="report-item">
+                  <small>Concern</small>
+                  <strong>Check engine light</strong>
+                </div>
+                <div class="report-item">
+                  <small>Findings</small>
+                  <strong>P0302 cylinder 2 misfire</strong>
+                </div>
+                <div class="report-item">
+                  <small>Next Step</small>
+                  <strong>Inspect spark plug and ignition coil</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Professional services with a car-focused feel</h2>
+            <p>This version leans harder into the automotive side while still keeping the clean, premium style you liked from version one.</p>
+          </div>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-top">
+              <h3>Check Engine Light Diagnostic</h3>
+              <div class="price">$85</div>
+            </div>
+            <p>For engine lights, rough idle, drivability concerns, and basic fault-code evaluation.</p>
+            <ul class="list">
+              <li><span class="tick">✓</span><span>System scan and code review</span></li>
+              <li><span class="tick">✓</span><span>Basic visual diagnostic inspection</span></li>
+              <li><span class="tick">✓</span><span>Clear recommendations and PDF report</span></li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="service-top">
+              <h3>Pre-Purchase Inspection</h3>
+              <div class="price">$150</div>
+            </div>
+            <p>Built for buyers who want a stronger second opinion before committing to a used vehicle.</p>
+            <ul class="list">
+              <li><span class="tick">✓</span><span>Condition review and scan</span></li>
+              <li><span class="tick">✓</span><span>Road-test notes if safe and permitted</span></li>
+              <li><span class="tick">✓</span><span>Summary report you can reference later</span></li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="service-top">
+              <h3>Vehicle Health Check</h3>
+              <div class="price">$75</div>
+            </div>
+            <p>For general condition checks before trips, repairs, or maintenance planning.</p>
+            <ul class="list">
+              <li><span class="tick">✓</span><span>Battery, fluids, and visible condition review</span></li>
+              <li><span class="tick">✓</span><span>Scan for stored or pending issues</span></li>
+              <li><span class="tick">✓</span><span>Basic written recommendations</span></li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="service-top">
+              <h3>Noise Diagnosis</h3>
+              <div class="price">$95</div>
+            </div>
+            <p>For rattles, grinding, squealing, clunks, humming, and other difficult-to-describe concerns.</p>
+            <ul class="list">
+              <li><span class="tick">✓</span><span>Interview and symptom breakdown</span></li>
+              <li><span class="tick">✓</span><span>Visual and driving-based evaluation</span></li>
+              <li><span class="tick">✓</span><span>Likely causes and next-step guidance</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>How it works</h2>
+            <p>The flow stays simple so customers know exactly what to expect.</p>
+          </div>
+        </div>
+
+        <div class="how-grid">
+          <article class="info-card">
+            <div class="icon">1</div>
+            <h3>Book online</h3>
+            <p>Select a service, add vehicle details, and submit the request through your booking form.</p>
+          </article>
+          <article class="info-card">
+            <div class="icon">2</div>
+            <h3>Agree to terms</h3>
+            <p>Customers review your service, payment, documentation, and safety policies before moving forward.</p>
+          </article>
+          <article class="info-card">
+            <div class="icon">3</div>
+            <h3>Continue to payment</h3>
+            <p>The appointment is only confirmed after online payment is completed.</p>
+          </article>
+          <article class="info-card">
+            <div class="icon">4</div>
+            <h3>Receive report</h3>
+            <p>After the visit, the customer receives findings and recommendations in a professional PDF summary.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="why-us">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Why this stands out from a regular mobile mechanic</h2>
+            <p>This section is the real business differentiator. It helps people understand that you are offering more than just “someone who comes to look at the car.”</p>
+          </div>
+        </div>
+
+        <div class="difference-grid">
+          <article class="difference-card">
+            <div class="icon">A</div>
+            <h3>Diagnostic-first service</h3>
+            <p>You focus on identifying likely causes and helping customers make smarter repair decisions.</p>
+          </article>
+          <article class="difference-card">
+            <div class="icon">B</div>
+            <h3>Written documentation</h3>
+            <p>Every appointment can end with a report the customer can keep, review, and show to a repair shop.</p>
+          </article>
+          <article class="difference-card">
+            <div class="icon">C</div>
+            <h3>Stronger professionalism</h3>
+            <p>Flat pricing, online intake, clear policies, and a polished brand presentation make the service feel more trustworthy.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Customer feedback</h2>
+            <p>You can start with placeholder testimonials and swap in real ones as soon as you begin serving customers.</p>
+          </div>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>Very knowledgeable and professional. The explanation felt clear and honest instead of rushed.</p>
+            <footer>— Early Review Placeholder</footer>
+          </article>
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>Helpful before spending money on repairs. This kind of service gives customers confidence.</p>
+            <footer>— Friend or Family Review</footer>
+          </article>
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>I like that it feels more organized than a basic mobile mechanic service.</p>
+            <footer>— Launch Review Placeholder</footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="book-now">
+      <div class="container booking-grid">
+        <div class="form-panel">
+          <div class="eyebrow">Book now</div>
+          <h3>Request an appointment</h3>
+          <p>This version uses cleaner wording and a more premium layout while keeping the flow practical for launch.</p>
+          <div class="callout">Appointments are confirmed only after payment. Service may be declined or rescheduled if the location is unsafe or unsuitable for mobile diagnostics.</div>
+
+          <form>
+            <div class="grid-2">
+              <label>
+                Full Name
+                <input type="text" placeholder="John Smith">
+              </label>
+              <label>
+                Phone Number
+                <input type="tel" placeholder="(407) 555-1234">
+              </label>
+            </div>
+
+            <div class="grid-2">
+              <label>
+                Email Address
+                <input type="email" placeholder="name@email.com">
+              </label>
+              <label>
+                Service Needed
+                <select>
+                  <option>Select a service</option>
+                  <option>Check Engine Light Diagnostic</option>
+                  <option>Pre-Purchase Inspection</option>
+                  <option>Vehicle Health Check</option>
+                  <option>Noise Diagnosis</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="grid-2">
+              <label>
+                Vehicle Year / Make / Model
+                <input type="text" placeholder="2016 Honda Civic">
+              </label>
+              <label>
+                Mileage
+                <input type="text" placeholder="124,000">
+              </label>
+            </div>
+
+            <div class="grid-2">
+              <label>
+                Preferred Date
+                <input type="date">
+              </label>
+              <label>
+                Preferred Time
+                <input type="time">
+              </label>
+            </div>
+
+            <label>
+              Vehicle Location
+              <input type="text" placeholder="Saint Cloud, FL or service address">
+            </label>
+
+            <label>
+              Describe the issue
+              <textarea placeholder="Example: Check engine light came on yesterday and the car feels rough at idle."></textarea>
+            </label>
+
+            <div class="checks">
+              <label class="check">
+                <input type="checkbox">
+                <span>I agree to the service terms and understand that diagnostics identify likely causes based on symptoms, scan data, and testing performed during the appointment.</span>
+              </label>
+              <label class="check">
+                <input type="checkbox">
+                <span>I understand that payment is required before the appointment is confirmed and that repairs are not included unless separately agreed upon.</span>
+              </label>
+              <label class="check">
+                <input type="checkbox">
+                <span>I agree that interactions may be documented or recorded for service documentation, training, and quality purposes.</span>
+              </label>
+              <label class="check">
+                <input type="checkbox">
+                <span>I understand service may be declined if the location is unsafe, inaccessible, or unsuitable for proper diagnostics.</span>
+              </label>
+            </div>
+
+            <a href="#" class="btn btn-primary">Continue to Payment</a>
+            <div class="mini-note">Replace this button link with your payment page or checkout flow later.</div>
+          </form>
+        </div>
+
+        <div class="form-panel">
+          <div class="eyebrow">Business details</div>
+          <h3>Clear policies without sounding harsh</h3>
+          <p>This side keeps your expectations visible while still sounding clean and professional.</p>
+
+          <div class="policy-stack">
+            <div class="feature-box">
+              <strong>Payment-first model</strong>
+              Customers confirm the appointment by continuing to payment before service is scheduled.
+            </div>
+            <div class="feature-box">
+              <strong>Diagnostic-only clarity</strong>
+              The appointment covers inspection, testing, and evaluation — not full repair work unless separately discussed.
+            </div>
+            <div class="feature-box">
+              <strong>If the issue cannot be fully confirmed</strong>
+              Your report can still show what was tested, what was observed, and what additional testing is recommended.
+            </div>
+            <div class="feature-box">
+              <strong>Service area</strong>
+              Orlando • Saint Cloud • Kissimmee • nearby Central Florida areas
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container contact-grid">
+        <div class="form-panel">
+          <div class="eyebrow">Contact</div>
+          <h3>Ready to launch with a stronger look</h3>
+          <p>This mockup is designed to feel more premium than version two while keeping the structure practical for your first launch.</p>
+        </div>
+
+        <div class="form-panel">
+          <div class="eyebrow">Brand line</div>
+          <h3>Use this message on the site and ads</h3>
+          <div class="callout" style="margin-top:12px;">JJ Auto Rescue provides mobile vehicle diagnostics and inspection services with flat pricing, clear recommendations, and professional written reports.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-bar">
+      <div>© 2026 JJ Auto Rescue</div>
+      <div>Diagnostics • Inspections • Professional reports</div>
+    </div>
+  </footer>
 </body>
 </html>
