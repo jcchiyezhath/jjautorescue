@@ -582,6 +582,12 @@
       margin-top: 8px;
     }
 
+    .booking-status {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #dff3ff;
+    }
+
     .policy-stack {
       display: grid;
       gap: 14px;
@@ -918,27 +924,28 @@
             <div class="grid-2">
               <label>
                 Full Name
-                <input type="text" placeholder="John Smith">
+                <input type="text" id="fullName" placeholder="John Smith" required>
               </label>
               <label>
                 Phone Number
-                <input type="tel" placeholder="(407) 555-1234">
+                <input type="tel" id="phone" placeholder="(407) 555-1234" required>
               </label>
             </div>
 
             <div class="grid-2">
               <label>
                 Email Address
-                <input type="email" placeholder="name@email.com">
+                <input type="email" id="email" placeholder="name@email.com" required>
               </label>
               <label>
                 Service Needed
-                <select>
-                  <option>Select a service</option>
-                  <option>Check Engine Light Diagnostic</option>
-                  <option>Pre-Purchase Inspection</option>
-                  <option>Vehicle Health Check</option>
-                  <option>Noise Diagnosis</option>
+                <select id="service" required>
+                  <option value="">Select a service</option>
+                  <option value="1. Check Engine Light Diagnosis">1. Check Engine Light Diagnosis</option>
+                  <option value="2. Pre-Purchase Vehicle Inspection">2. Pre-Purchase Vehicle Inspection</option>
+                  <option value="3. Vehicle Health Check">3. Vehicle Health Check</option>
+                  <option value="4. Noise Diagnosis">4. Noise Diagnosis</option>
+                  <option value="5. Other">5. Other</option>
                 </select>
               </label>
             </div>
@@ -946,56 +953,57 @@
             <div class="grid-2">
               <label>
                 Vehicle Year / Make / Model
-                <input type="text" placeholder="2016 Honda Civic">
+                <input type="text" id="vehicle" placeholder="2016 Honda Civic" required>
               </label>
               <label>
                 Mileage
-                <input type="text" placeholder="124,000">
+                <input type="text" id="mileage" placeholder="124,000" required>
               </label>
             </div>
 
             <div class="grid-2">
               <label>
                 Preferred Date
-                <input type="date">
+                <input type="date" id="date" required>
               </label>
               <label>
                 Preferred Time
-                <input type="time">
+                <input type="time" id="time" required>
               </label>
             </div>
 
             <label>
               Vehicle Location
-              <input type="text" placeholder="Saint Cloud, FL or service address">
+              <input type="text" id="location" placeholder="Saint Cloud, FL or full service address" required>
             </label>
 
             <label>
               Describe the issue
-              <textarea placeholder="Example: Check engine light came on yesterday and the car feels rough at idle."></textarea>
+              <textarea id="issue" placeholder="Example: Check engine light came on yesterday and the car feels rough at idle." required></textarea>
             </label>
 
             <div class="checks">
               <label class="check">
-                <input type="checkbox">
+                <input type="checkbox" id="terms" required>
                 <span>I agree to the service terms and understand that diagnostics identify likely causes based on symptoms, scan data, and testing performed during the appointment.</span>
               </label>
               <label class="check">
-                <input type="checkbox">
+                <input type="checkbox" id="paymentAgree" required>
                 <span>I understand that payment is required before the appointment is confirmed and that repairs are not included unless separately agreed upon.</span>
               </label>
               <label class="check">
-                <input type="checkbox">
+                <input type="checkbox" id="recording" required>
                 <span>I agree that interactions may be documented or recorded for service documentation, training, and quality purposes.</span>
               </label>
               <label class="check">
-                <input type="checkbox">
+                <input type="checkbox" id="safetyAgree" required>
                 <span>I understand service may be declined if the location is unsafe, inaccessible, or unsuitable for proper diagnostics.</span>
               </label>
             </div>
 
-            <a href="#" class="btn btn-primary">Continue to Payment</a>
-            <div class="mini-note">Replace this button link with your payment page or checkout flow later.</div>
+            <button type="submit" class="btn btn-primary">Continue to Payment</button>
+            <div class="mini-note">Your booking details will be saved first, then you will continue to payment.</div>
+            <div class="booking-status" id="bookingStatus"></div>
           </form>
         </div>
 
@@ -1049,5 +1057,81 @@
       <div>Diagnostics • Inspections • Professional reports</div>
     </div>
   </footer>
+
+  <script>
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
+
+    function generateBookingCode() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const hh = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      const ss = String(now.getSeconds()).padStart(2, "0");
+      return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const statusEl = document.getElementById("bookingStatus");
+      statusEl.textContent = "Saving your booking...";
+
+      const bookingCode = generateBookingCode();
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const vehicle = document.getElementById("vehicle").value.trim();
+      const mileage = document.getElementById("mileage").value.trim();
+      const service = document.getElementById("service").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const location = document.getElementById("location").value.trim();
+      const issue = document.getElementById("issue").value.trim();
+
+      if (!service) {
+        statusEl.textContent = "Please select a service.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("entry.2104257763", bookingCode);
+      formData.append("entry.589811794", fullName);
+      formData.append("entry.1808340048", phone);
+      formData.append("entry.970185648", email);
+      formData.append("entry.213738138", vehicle);
+      formData.append("entry.947101800", mileage);
+      formData.append("entry.907399312", service);
+      formData.append("entry.1785913985", date);
+      formData.append("entry.1036450522", time);
+      formData.append("entry.949228142", location);
+      formData.append("entry.621408753", issue);
+      formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
+      formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
+
+      try {
+        await fetch(GOOGLE_FORM_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        });
+
+        localStorage.setItem("jjrBookingCode", bookingCode);
+        localStorage.setItem("jjrCustomerName", fullName);
+        localStorage.setItem("jjrService", service);
+
+        statusEl.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
+
+        setTimeout(() => {
+          window.location.href = "payment.html";
+        }, 1200);
+      } catch (error) {
+        statusEl.textContent = "There was a problem saving your booking. Please try again.";
+        console.error(error);
+      }
+    });
+  </script>
 </body>
 </html>
