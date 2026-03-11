@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JJ Auto Rescue Test Form</title>
+</head>
+<body>
+  <h1>JJ Auto Rescue Test Booking</h1>
+
+  <form id="bookingForm">
+    <input type="text" id="fullName" placeholder="Full Name" required><br><br>
+    <input type="text" id="phone" placeholder="Phone Number" required><br><br>
+    <input type="email" id="email" placeholder="Email Address" required><br><br>
+    <input type="text" id="vehicle" placeholder="Vehicle Year / Make / Model" required><br><br>
+    <input type="text" id="mileage" placeholder="Mileage" required><br><br>
+
+    <select id="service" required>
+      <option value="">Select Service</option>
+      <option>1. Check Engine Light Diagnosis</option>
+      <option>2. Pre-Purchase Vehicle Inspection</option>
+      <option>3. Vehicle Health Check</option>
+      <option>4. Noise Diagnosis</option>
+      <option>5. Other</option>
+    </select><br><br>
+
+    <input type="date" id="date" required><br><br>
+
+    <select id="time" required>
+      <option value="">Select Time</option>
+      <option>1. Morning (8 AM – 11 AM)</option>
+      <option>2. Midday (11 AM – 2 PM)</option>
+      <option>3. Afternoon (2 PM – 5 PM)</option>
+      <option>4. Evening (5 PM – 7 PM)</option>
+    </select><br><br>
+
+    <input type="text" id="location" placeholder="Vehicle Location" required><br><br>
+    <textarea id="issue" placeholder="Describe the issue" required></textarea><br><br>
+
+    <label>
+      <input type="checkbox" id="terms" required>
+      I agree to service terms
+    </label><br><br>
+
+    <label>
+      <input type="checkbox" id="recording" required>
+      I agree to documentation and recording
+    </label><br><br>
+
+    <button type="submit">Submit Test Booking</button>
+  </form>
+
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const bookingCode = "JJR-" + Date.now();
+
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
+
+      const formData = new FormData();
+      formData.append("entry.2104257763", bookingCode);
+      formData.append("entry.589811794", document.getElementById("fullName").value);
+      formData.append("entry.1808340048", document.getElementById("phone").value);
+      formData.append("entry.970185648", document.getElementById("email").value);
+      formData.append("entry.213738138", document.getElementById("vehicle").value);
+      formData.append("entry.947101800", document.getElementById("mileage").value);
+      formData.append("entry.907399312", document.getElementById("service").value);
+      formData.append("entry.1785913985", document.getElementById("date").value);
+      formData.append("entry.1036450522", document.getElementById("time").value);
+      formData.append("entry.949228142", document.getElementById("location").value);
+      formData.append("entry.621408753", document.getElementById("issue").value);
+      formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
+      formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
+
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      }).then(() => {
+        alert("Test booking submitted. Booking Code: " + bookingCode);
+      });
+    });
+  </script>
+</body>
+</html>
