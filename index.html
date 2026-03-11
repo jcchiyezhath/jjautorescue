@@ -967,9 +967,15 @@
                 <input type="date" id="date" required>
               </label>
               <label>
-                Preferred Time
-                <input type="time" id="time" required>
-              </label>
+  Preferred Time
+  <select id="time" required>
+    <option value="">Select a time</option>
+    <option value="1. Morning (8 AM – 11 AM)">1. Morning (8 AM – 11 AM)</option>
+    <option value="2. Midday (11 AM – 2 PM)">2. Midday (11 AM – 2 PM)</option>
+    <option value="3. Afternoon (2 PM – 5 PM)">3. Afternoon (2 PM – 5 PM)</option>
+    <option value="4. Evening (5 PM – 7 PM)">4. Evening (5 PM – 7 PM)</option>
+  </select>
+</label>
             </div>
 
             <label>
@@ -1125,7 +1131,7 @@
         statusEl.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
 
         setTimeout(() => {
-          window.location.href = "payment.html";
+          window.location.href = "thank-you.html";
         }, 1200);
       } catch (error) {
         statusEl.textContent = "There was a problem saving your booking. Please try again.";
