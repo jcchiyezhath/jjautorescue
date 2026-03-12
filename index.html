@@ -1136,8 +1136,8 @@
         statusEl.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
 
         setTimeout(() => {
-          window.location.href = "thank-you.html";
-        }, 1200);
+  window.location.href = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
+}, 1200);
       } catch (error) {
         statusEl.textContent = "There was a problem saving your booking. Please try again.";
         console.error(error);
