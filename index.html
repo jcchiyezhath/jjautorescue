@@ -1124,7 +1124,8 @@ function updatePrice() {
          <strong>Final Price: $${finalPrice}</strong>`;
     } else {
       pricePreview.innerHTML =
-        `<strong>Service Price: $${basePrice}</strong>`;
+  `Service Price: <strong>$${basePrice}</strong><br>
+  Enter a promo or referral code to see if a discount applies.`;
     }
   } else {
     pricePreview.innerHTML = "";
