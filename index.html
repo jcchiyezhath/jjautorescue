@@ -1135,8 +1135,27 @@
 
         statusEl.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
 
-        setTimeout(() => {
-  window.location.href = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
+        let paymentLink = "";
+
+// choose correct PayPal link based on service
+if (service.includes("Check Engine")) {
+  paymentLink = "https://www.paypal.com/ncp/payment/CCT8EBPDQHWJJ";
+}
+else if (service.includes("Pre-Purchase")) {
+  paymentLink = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
+}
+else if (service.includes("Vehicle Health")) {
+  paymentLink = "https://www.paypal.com/ncp/payment/HPQKGNPUMV7KA";
+}
+else if (service.includes("Noise")) {
+  paymentLink = "https://www.paypal.com/ncp/payment/R98TZUQDM54AU";
+}
+else {
+  paymentLink = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
+}
+
+setTimeout(() => {
+  window.location.href = paymentLink;
 }, 1200);
       } catch (error) {
         statusEl.textContent = "There was a problem saving your booking. Please try again.";
