@@ -3,10 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You</title>
+  <title>Thank You | JJ Auto Rescue</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #08111f;
+      color: #edf4ff;
+      margin: 0;
+      padding: 40px 20px;
+    }
+    .card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 30px;
+    }
+    h1 { margin-top: 0; }
+    p { color: #cdd9ee; line-height: 1.6; }
+  </style>
 </head>
-<body style="font-family: Arial; padding: 40px;">
-  <h1>Booking Submitted</h1>
-  <p>Your booking was submitted.</p>
+<body>
+  <div class="card">
+    <h1>Thank you for your payment</h1>
+    <p>Your booking request and payment have been received.</p>
+    <p id="bookingCodeText"></p>
+    <p>We will review your request and follow up with confirmation details.</p>
+  </div>
+
+  <script>
+    const bookingCode = localStorage.getItem("jjrBookingCode") || "";
+    if (bookingCode) {
+      document.getElementById("bookingCodeText").textContent = "Booking reference: " + bookingCode;
+    }
+  </script>
 </body>
 </html>
