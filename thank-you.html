@@ -5,37 +5,206 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thank You | JJ Auto Rescue</title>
   <style>
+    :root {
+      --bg: #08111f;
+      --text: #edf4ff;
+      --muted: #cdd9ee;
+      --line: rgba(255,255,255,0.08);
+      --panel: rgba(255,255,255,0.05);
+      --accent: #1e90ff;
+      --accent-2: #56c2ff;
+      --radius: 24px;
+      --shadow: 0 24px 60px rgba(0,0,0,.34);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #08111f;
-      color: #edf4ff;
       margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top center, rgba(86,194,255,0.08), transparent 28%),
+        linear-gradient(180deg, #091120 0%, #08111f 45%, #0a1425 100%);
       padding: 40px 20px;
     }
-    .card {
-      max-width: 700px;
+
+    .wrap {
+      max-width: 760px;
       margin: 0 auto;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 30px;
     }
-    h1 { margin-top: 0; }
-    p { color: #cdd9ee; line-height: 1.6; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(30,144,255,.12);
+      color: #d7efff;
+      border: 1px solid rgba(86,194,255,.24);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    .info-box {
+      margin: 22px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(30,144,255,.10);
+      border: 1px solid rgba(86,194,255,.20);
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 18px;
+    }
+
+    .next-steps {
+      margin-top: 26px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .next-steps h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    .next-steps ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: .25s ease;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 14px 34px rgba(30,144,255,.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #a8b9d7;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 24px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Thank you for your payment</h1>
-    <p>Your booking request and payment have been received.</p>
-    <p id="bookingCodeText"></p>
-    <p>We will review your request and follow up with confirmation details.</p>
+  <div class="wrap">
+    <div class="card">
+      <div class="eyebrow">Booking received</div>
+      <h1>Thank you for your payment</h1>
+      <p>Your booking request and payment have been received successfully.</p>
+      <p>We will review your request and follow up if any clarification is needed before the appointment.</p>
+
+      <div class="info-box">
+        <strong>Booking reference</strong>
+        <span id="bookingCodeText">Loading booking reference...</span>
+      </div>
+
+      <div class="next-steps">
+        <h2>What happens next</h2>
+        <ul>
+          <li>Your request has been saved to our system.</li>
+          <li>Your payment has been submitted with your booking.</li>
+          <li>JJ Auto Rescue will review the request and follow up if needed before the appointment.</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <a href="index.html" class="btn btn-primary">Return to Home</a>
+        <a href="index.html#book-now" class="btn btn-secondary">Book Another Appointment</a>
+      </div>
+
+      <div class="footer-note">
+        JJ Auto Rescue • Mobile Diagnostics & Vehicle Inspections • Central Florida
+      </div>
+    </div>
   </div>
 
   <script>
-    const bookingCode = localStorage.getItem("jjrBookingCode") || "";
+    const bookingCode =
+      localStorage.getItem("jjrPaidBookingCode") ||
+      localStorage.getItem("jjrBookingCode") ||
+      "";
+
+    const bookingCodeText = document.getElementById("bookingCodeText");
+
     if (bookingCode) {
-      document.getElementById("bookingCodeText").textContent = "Booking reference: " + bookingCode;
+      bookingCodeText.textContent = bookingCode;
+    } else {
+      bookingCodeText.textContent = "Your booking reference has been saved.";
     }
   </script>
 </body>
