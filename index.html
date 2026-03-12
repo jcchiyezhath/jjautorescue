@@ -594,10 +594,15 @@
 }
 
     .booking-status {
-      margin-top: 14px;
-      font-size: 14px;
-      color: #dff3ff;
-    }
+  margin-top: 14px;
+  font-size: 14px;
+  color: #dff3ff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(30,144,255,.10);
+  border: 1px solid rgba(86,194,255,.20);
+  display: none;
+}
 
     .policy-stack {
       display: grid;
@@ -1024,11 +1029,16 @@
               </label>
             </div>
 
-            <button type="submit" class="btn btn-primary">Continue to Payment</button>
-            <div class="mini-note">Your booking details will be saved first, then you will continue to payment.</div>
-            <div class="booking-status" id="bookingStatus"></div>
-          </form>
-        </div>
+            <button type="submit" class="btn btn-primary" id="saveBookingBtn">Save Booking & Continue</button>
+<div class="mini-note">Your booking details will be saved first, then you can complete payment below.</div>
+<div class="booking-status" id="bookingStatus"></div>
+
+<div id="paypalSection" style="display:none; margin-top:16px;">
+  <div class="callout" style="margin-bottom:12px;">
+    Booking saved. Complete your payment below to confirm your appointment.
+  </div>
+  <div id="paypal-button-container"></div>
+</div>
 
         <div class="form-panel">
           <div class="eyebrow">Business details</div>
