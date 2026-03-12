@@ -1081,21 +1081,18 @@
     </div>
   </footer>
 
- <script>
+<script>
   const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
-
-  const PAYPAL_LINKS = {
-    checkEngine: "https://www.paypal.com/ncp/payment/CCT8EBPDQHWJJ",
-    prePurchase: "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA",
-    vehicleHealth: "https://www.paypal.com/ncp/payment/HPQKGNPUMV7KA",
-    noise: "https://www.paypal.com/ncp/payment/R98TZUQDM54AU",
-    fallback: "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA"
-  };
 
   const serviceSelect = document.getElementById("service");
   const promoInput = document.getElementById("promo");
   const pricePreview = document.getElementById("pricePreview");
   const bookingStatus = document.getElementById("bookingStatus");
+  const paypalSection = document.getElementById("paypalSection");
+
+  let currentFinalPrice = 0;
+  let currentBookingCode = "";
+  let paypalRendered = false;
 
   function getBasePrice(service) {
     if (service.includes("Check Engine")) return 85;
@@ -1105,12 +1102,15 @@
     return 0;
   }
 
-  function getPaymentLink(service) {
-    if (service.includes("Check Engine")) return PAYPAL_LINKS.checkEngine;
-    if (service.includes("Pre-Purchase")) return PAYPAL_LINKS.prePurchase;
-    if (service.includes("Vehicle Health")) return PAYPAL_LINKS.vehicleHealth;
-    if (service.includes("Noise")) return PAYPAL_LINKS.noise;
-    return PAYPAL_LINKS.fallback;
+  function getFinalPrice(service, promo) {
+    const basePrice = getBasePrice(service);
+    let finalPrice = basePrice;
+
+    if (promo === "FIRST20") {
+      finalPrice = Math.max(basePrice - 20, 0);
+    }
+
+    return finalPrice;
   }
 
   function updatePrice() {
@@ -1120,32 +1120,24 @@
 
     if (!basePrice) {
       pricePreview.innerHTML = "";
+      currentFinalPrice = 0;
       return;
     }
 
-    let finalPrice = basePrice;
-    let discountText = "";
-
-    if (promo === "FIRST20") {
-      finalPrice = Math.max(basePrice - 20, 0);
-      discountText = `Discount Applied: -$${basePrice - finalPrice}<br>`;
-    }
-
-    if (promo && promo !== "FIRST20") {
-      discountText = `Code entered: <strong>${promo}</strong><br>`;
-    }
+    const finalPrice = getFinalPrice(service, promo);
+    currentFinalPrice = finalPrice;
 
     if (finalPrice < basePrice) {
-      pricePreview.innerHTML =
-        `Service Price: <strong>$${basePrice}</strong><br>
-         ${discountText}
-         Estimated Price: <strong>$${finalPrice}</strong><br>
-         <span style="font-size:12px;color:#cfe8ff;">Discount codes are tracked with your booking. Payment links currently use fixed service pricing.</span>`;
+      pricePreview.innerHTML = `
+        Service Price: <strong>$${basePrice}</strong><br>
+        Discount Applied: -$${basePrice - finalPrice}<br>
+        Estimated Price: <strong>$${finalPrice}</strong>
+      `;
     } else {
-      pricePreview.innerHTML =
-        `Service Price: <strong>$${basePrice}</strong><br>
-         ${discountText}
-         <span style="font-size:12px;color:#cfe8ff;">Enter a promo or referral code to see if a discount applies.</span>`;
+      pricePreview.innerHTML = `
+        Service Price: <strong>$${basePrice}</strong><br>
+        <span style="font-size:12px;color:#cfe8ff;">Enter a promo or referral code to see if a discount applies.</span>
+      `;
     }
   }
 
@@ -1163,6 +1155,58 @@
     return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
   }
 
+  function renderPayPalButtons() {
+    if (paypalRendered) return;
+    paypalRendered = true;
+
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        const service = document.getElementById("service").value;
+        const promo = document.getElementById("promo").value.trim().toUpperCase();
+        const finalPrice = getFinalPrice(service, promo);
+
+        return actions.order.create({
+          purchase_units: [
+            {
+              description: service || "JJ Auto Rescue Diagnostic Service",
+              custom_id: currentBookingCode || "JJR-NO-CODE",
+              amount: {
+                currency_code: "USD",
+                value: finalPrice.toFixed(2)
+              }
+            }
+          ]
+        });
+      },
+
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          const payerName = details?.payer?.name?.given_name || "Customer";
+          bookingStatus.style.display = "block";
+          bookingStatus.textContent = `Payment completed successfully. Thank you, ${payerName}. Your booking reference is ${currentBookingCode}.`;
+
+          localStorage.setItem("jjrPaidOrderId", data.orderID || "");
+          localStorage.setItem("jjrPaidBookingCode", currentBookingCode || "");
+
+          setTimeout(() => {
+            window.location.href = "thank-you.html";
+          }, 1800);
+        });
+      },
+
+      onCancel: function() {
+        bookingStatus.style.display = "block";
+        bookingStatus.textContent = "Payment was cancelled. Your booking request is saved, but payment is still needed to confirm the appointment.";
+      },
+
+      onError: function(err) {
+        console.error(err);
+        bookingStatus.style.display = "block";
+        bookingStatus.textContent = "There was a PayPal error. Please try again.";
+      }
+    }).render("#paypal-button-container");
+  }
+
   document.getElementById("bookingForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
@@ -1170,6 +1214,8 @@
     bookingStatus.textContent = "Saving your booking...";
 
     const bookingCode = generateBookingCode();
+    currentBookingCode = bookingCode;
+
     const fullName = document.getElementById("fullName").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -1186,6 +1232,8 @@
       bookingStatus.textContent = "Please select a service.";
       return;
     }
+
+    currentFinalPrice = getFinalPrice(service, promo);
 
     const formData = new FormData();
     formData.append("entry.2104257763", bookingCode);
@@ -1214,19 +1262,22 @@
       localStorage.setItem("jjrCustomerName", fullName);
       localStorage.setItem("jjrService", service);
       localStorage.setItem("jjrPromo", promo);
+      localStorage.setItem("jjrFinalPrice", String(currentFinalPrice));
 
-      const paymentLink = getPaymentLink(service);
+      bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Complete payment below.`;
 
-      bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
+      paypalSection.style.display = "block";
+      renderPayPalButtons();
 
-      setTimeout(() => {
-        window.location.href = paymentLink;
-      }, 1400);
+      document.getElementById("saveBookingBtn").disabled = true;
+      document.getElementById("saveBookingBtn").textContent = "Booking Saved";
     } catch (error) {
-      bookingStatus.textContent = "There was a problem saving your booking. Please try again.";
       console.error(error);
+      bookingStatus.textContent = "There was a problem saving your booking. Please try again.";
     }
   });
+
+  updatePrice();
 </script>
 </body>
 </html>
