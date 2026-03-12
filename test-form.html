@@ -55,6 +55,7 @@
       e.preventDefault();
 
       const bookingCode = "JJR-" + Date.now();
+      const promo = document.getElementById("promo").value;
 
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
 
@@ -70,6 +71,7 @@
       formData.append("entry.1036450522", document.getElementById("time").value);
       formData.append("entry.949228142", document.getElementById("location").value);
       formData.append("entry.621408753", document.getElementById("issue").value);
+      formData.append("entry.1282163118", promo);
       formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
       formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
 
