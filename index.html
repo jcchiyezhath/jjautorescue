@@ -582,6 +582,17 @@
       margin-top: 8px;
     }
 
+    .price-preview {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(30,144,255,.10);
+  border: 1px solid rgba(86,194,255,.20);
+  color: #dff3ff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
     .booking-status {
       margin-top: 14px;
       font-size: 14px;
@@ -990,8 +1001,9 @@
             
             <label>
             Promo or Referral Code 
-            <input type="text" id="promo" placeholder="FIRST20 or referral code">
+            <input type="text" id="promo" placeholder="Enter promo or referral code (optional)">
             </label>
+            <div id="pricePreview" class="price-preview"></div>
 
             <div class="checks">
               <label class="check">
@@ -1083,6 +1095,46 @@
       return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
     }
 
+    const serviceSelect = document.getElementById("service");
+const promoInput = document.getElementById("promo");
+const pricePreview = document.getElementById("pricePreview");
+
+function updatePrice() {
+
+  let basePrice = 0;
+
+  if (serviceSelect.value.includes("Check Engine")) basePrice = 85;
+  else if (serviceSelect.value.includes("Pre-Purchase")) basePrice = 150;
+  else if (serviceSelect.value.includes("Vehicle Health")) basePrice = 75;
+  else if (serviceSelect.value.includes("Noise")) basePrice = 95;
+
+  let finalPrice = basePrice;
+
+  const promo = promoInput.value.trim().toUpperCase();
+
+  if (promo === "FIRST20") {
+    finalPrice = Math.max(basePrice - 20, 0);
+  }
+
+  if (basePrice > 0) {
+    if (finalPrice < basePrice) {
+      pricePreview.innerHTML =
+        `Service Price: $${basePrice} <br>
+         Discount Applied: -$${basePrice - finalPrice} <br>
+         <strong>Final Price: $${finalPrice}</strong>`;
+    } else {
+      pricePreview.innerHTML =
+        `<strong>Service Price: $${basePrice}</strong>`;
+    }
+  } else {
+    pricePreview.innerHTML = "";
+  }
+
+}
+
+serviceSelect.addEventListener("change", updatePrice);
+promoInput.addEventListener("input", updatePrice);
+    
     document.getElementById("bookingForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
