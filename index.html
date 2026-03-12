@@ -1081,142 +1081,152 @@
     </div>
   </footer>
 
-  <script>
-    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
+ <script>
+  const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
 
-    function generateBookingCode() {
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, "0");
-      const dd = String(now.getDate()).padStart(2, "0");
-      const hh = String(now.getHours()).padStart(2, "0");
-      const min = String(now.getMinutes()).padStart(2, "0");
-      const ss = String(now.getSeconds()).padStart(2, "0");
-      return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
-    }
+  const PAYPAL_LINKS = {
+    checkEngine: "https://www.paypal.com/ncp/payment/CCT8EBPDQHWJJ",
+    prePurchase: "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA",
+    vehicleHealth: "https://www.paypal.com/ncp/payment/HPQKGNPUMV7KA",
+    noise: "https://www.paypal.com/ncp/payment/R98TZUQDM54AU",
+    fallback: "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA"
+  };
 
-    const serviceSelect = document.getElementById("service");
-const promoInput = document.getElementById("promo");
-const pricePreview = document.getElementById("pricePreview");
+  const serviceSelect = document.getElementById("service");
+  const promoInput = document.getElementById("promo");
+  const pricePreview = document.getElementById("pricePreview");
+  const bookingStatus = document.getElementById("bookingStatus");
 
-function updatePrice() {
-
-  let basePrice = 0;
-
-  if (serviceSelect.value.includes("Check Engine")) basePrice = 85;
-  else if (serviceSelect.value.includes("Pre-Purchase")) basePrice = 150;
-  else if (serviceSelect.value.includes("Vehicle Health")) basePrice = 75;
-  else if (serviceSelect.value.includes("Noise")) basePrice = 95;
-
-  let finalPrice = basePrice;
-
-  const promo = promoInput.value.trim().toUpperCase();
-
-  if (promo === "FIRST20") {
-    finalPrice = Math.max(basePrice - 20, 0);
+  function getBasePrice(service) {
+    if (service.includes("Check Engine")) return 85;
+    if (service.includes("Pre-Purchase")) return 150;
+    if (service.includes("Vehicle Health")) return 75;
+    if (service.includes("Noise")) return 95;
+    return 0;
   }
 
-  if (basePrice > 0) {
+  function getPaymentLink(service) {
+    if (service.includes("Check Engine")) return PAYPAL_LINKS.checkEngine;
+    if (service.includes("Pre-Purchase")) return PAYPAL_LINKS.prePurchase;
+    if (service.includes("Vehicle Health")) return PAYPAL_LINKS.vehicleHealth;
+    if (service.includes("Noise")) return PAYPAL_LINKS.noise;
+    return PAYPAL_LINKS.fallback;
+  }
+
+  function updatePrice() {
+    const service = serviceSelect.value;
+    const promo = promoInput.value.trim().toUpperCase();
+    const basePrice = getBasePrice(service);
+
+    if (!basePrice) {
+      pricePreview.innerHTML = "";
+      return;
+    }
+
+    let finalPrice = basePrice;
+    let discountText = "";
+
+    if (promo === "FIRST20") {
+      finalPrice = Math.max(basePrice - 20, 0);
+      discountText = `Discount Applied: -$${basePrice - finalPrice}<br>`;
+    }
+
+    if (promo && promo !== "FIRST20") {
+      discountText = `Code entered: <strong>${promo}</strong><br>`;
+    }
+
     if (finalPrice < basePrice) {
       pricePreview.innerHTML =
-        `Service Price: $${basePrice} <br>
-         Discount Applied: -$${basePrice - finalPrice} <br>
-         <strong>Final Price: $${finalPrice}</strong>`;
+        `Service Price: <strong>$${basePrice}</strong><br>
+         ${discountText}
+         Estimated Price: <strong>$${finalPrice}</strong><br>
+         <span style="font-size:12px;color:#cfe8ff;">Discount codes are tracked with your booking. Payment links currently use fixed service pricing.</span>`;
     } else {
       pricePreview.innerHTML =
-  `Service Price: <strong>$${basePrice}</strong><br>
-  Enter a promo or referral code to see if a discount applies.`;
+        `Service Price: <strong>$${basePrice}</strong><br>
+         ${discountText}
+         <span style="font-size:12px;color:#cfe8ff;">Enter a promo or referral code to see if a discount applies.</span>`;
     }
-  } else {
-    pricePreview.innerHTML = "";
   }
 
-}
+  serviceSelect.addEventListener("change", updatePrice);
+  promoInput.addEventListener("input", updatePrice);
 
-serviceSelect.addEventListener("change", updatePrice);
-promoInput.addEventListener("input", updatePrice);
-    
-    document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+  function generateBookingCode() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const hh = String(now.getHours()).padStart(2, "0");
+    const min = String(now.getMinutes()).padStart(2, "0");
+    const ss = String(now.getSeconds()).padStart(2, "0");
+    return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
+  }
 
-      const statusEl = document.getElementById("bookingStatus");
-      statusEl.textContent = "Saving your booking...";
+  document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
 
-      const bookingCode = generateBookingCode();
+    bookingStatus.style.display = "block";
+    bookingStatus.textContent = "Saving your booking...";
 
-      const fullName = document.getElementById("fullName").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const vehicle = document.getElementById("vehicle").value.trim();
-      const mileage = document.getElementById("mileage").value.trim();
-      const service = document.getElementById("service").value;
-      const date = document.getElementById("date").value;
-      const time = document.getElementById("time").value;
-      const location = document.getElementById("location").value.trim();
-      const issue = document.getElementById("issue").value.trim();
-      const promo = document.getElementById("promo").value.trim().toUpperCase();
+    const bookingCode = generateBookingCode();
+    const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const vehicle = document.getElementById("vehicle").value.trim();
+    const mileage = document.getElementById("mileage").value.trim();
+    const service = document.getElementById("service").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const location = document.getElementById("location").value.trim();
+    const issue = document.getElementById("issue").value.trim();
+    const promo = document.getElementById("promo").value.trim().toUpperCase();
 
-      if (!service) {
-        statusEl.textContent = "Please select a service.";
-        return;
-      }
+    if (!service) {
+      bookingStatus.textContent = "Please select a service.";
+      return;
+    }
 
-      const formData = new FormData();
-      formData.append("entry.2104257763", bookingCode);
-      formData.append("entry.589811794", fullName);
-      formData.append("entry.1808340048", phone);
-      formData.append("entry.970185648", email);
-      formData.append("entry.213738138", vehicle);
-      formData.append("entry.947101800", mileage);
-      formData.append("entry.907399312", service);
-      formData.append("entry.1785913985", date);
-      formData.append("entry.1036450522", time);
-      formData.append("entry.949228142", location);
-      formData.append("entry.621408753", issue);
-      formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
-      formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
+    const formData = new FormData();
+    formData.append("entry.2104257763", bookingCode);
+    formData.append("entry.589811794", fullName);
+    formData.append("entry.1808340048", phone);
+    formData.append("entry.970185648", email);
+    formData.append("entry.213738138", vehicle);
+    formData.append("entry.947101800", mileage);
+    formData.append("entry.907399312", service);
+    formData.append("entry.1785913985", date);
+    formData.append("entry.1036450522", time);
+    formData.append("entry.949228142", location);
+    formData.append("entry.621408753", issue);
+    formData.append("entry.1282163118", promo);
+    formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
+    formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
 
-      try {
-        await fetch(GOOGLE_FORM_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: formData
-        });
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      });
 
-        localStorage.setItem("jjrBookingCode", bookingCode);
-        localStorage.setItem("jjrCustomerName", fullName);
-        localStorage.setItem("jjrService", service);
-        localStorage.setItem("jjrPromo", promo);
+      localStorage.setItem("jjrBookingCode", bookingCode);
+      localStorage.setItem("jjrCustomerName", fullName);
+      localStorage.setItem("jjrService", service);
+      localStorage.setItem("jjrPromo", promo);
 
-        statusEl.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
+      const paymentLink = getPaymentLink(service);
 
-        let paymentLink = "";
+      bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Redirecting to payment...`;
 
-// choose correct PayPal link based on service
-if (service.includes("Check Engine")) {
-  paymentLink = "https://www.paypal.com/ncp/payment/CCT8EBPDQHWJJ";
-}
-else if (service.includes("Pre-Purchase")) {
-  paymentLink = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
-}
-else if (service.includes("Vehicle Health")) {
-  paymentLink = "https://www.paypal.com/ncp/payment/HPQKGNPUMV7KA";
-}
-else if (service.includes("Noise")) {
-  paymentLink = "https://www.paypal.com/ncp/payment/R98TZUQDM54AU";
-}
-else {
-  paymentLink = "https://www.paypal.com/ncp/payment/E3M5Y8XDR8GQA";
-}
-
-setTimeout(() => {
-  window.location.href = paymentLink;
-}, 1200);
-      } catch (error) {
-        statusEl.textContent = "There was a problem saving your booking. Please try again.";
-        console.error(error);
-      }
-    });
-  </script>
+      setTimeout(() => {
+        window.location.href = paymentLink;
+      }, 1400);
+    } catch (error) {
+      bookingStatus.textContent = "There was a problem saving your booking. Please try again.";
+      console.error(error);
+    }
+  });
+</script>
 </body>
 </html>
