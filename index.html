@@ -937,108 +937,110 @@
           <div class="callout">Appointments are confirmed only after payment. Service may be declined or rescheduled if the location is unsafe or unsuitable for mobile diagnostics.</div>
 
           <form id="bookingForm">
-            <div class="grid-2">
-              <label>
-                Full Name
-                <input type="text" id="fullName" placeholder="John Smith" required>
-              </label>
-              <label>
-                Phone Number
-                <input type="tel" id="phone" placeholder="(407) 555-1234" required>
-              </label>
-            </div>
-
-            <div class="grid-2">
-              <label>
-                Email Address
-                <input type="email" id="email" placeholder="name@email.com" required>
-              </label>
-              <label>
-                Service Needed
-                <select id="service" required>
-                  <option value="">Select a service</option>
-                  <option value="1. Check Engine Light Diagnosis">1. Check Engine Light Diagnosis</option>
-                  <option value="2. Pre-Purchase Vehicle Inspection">2. Pre-Purchase Vehicle Inspection</option>
-                  <option value="3. Vehicle Health Check">3. Vehicle Health Check</option>
-                  <option value="4. Noise Diagnosis">4. Noise Diagnosis</option>
-                  <option value="5. Other">5. Other</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="grid-2">
-              <label>
-                Vehicle Year / Make / Model
-                <input type="text" id="vehicle" placeholder="2016 Honda Civic" required>
-              </label>
-              <label>
-                Mileage
-                <input type="text" id="mileage" placeholder="124,000" required>
-              </label>
-            </div>
-
-            <div class="grid-2">
-              <label>
-                Preferred Date
-                <input type="date" id="date" required>
-              </label>
-              <label>
-  Preferred Time
-  <select id="time" required>
-    <option value="">Select a time</option>
-    <option value="1. Morning (8 AM – 11 AM)">1. Morning (8 AM – 11 AM)</option>
-    <option value="2. Midday (11 AM – 2 PM)">2. Midday (11 AM – 2 PM)</option>
-    <option value="3. Afternoon (2 PM – 5 PM)">3. Afternoon (2 PM – 5 PM)</option>
-    <option value="4. Evening (5 PM – 7 PM)">4. Evening (5 PM – 7 PM)</option>
-  </select>
-</label>
-            </div>
-
-            <label>
-              Vehicle Location
-              <input type="text" id="location" placeholder="Saint Cloud, FL or full service address" required>
-            </label>
-
-            <label>
-              Describe the issue
-              <textarea id="issue" placeholder="Example: Check engine light came on yesterday and the car feels rough at idle." required></textarea>
-            </label>
-            
-            <label>
-            Promo or Referral Code 
-            <input type="text" id="promo" placeholder="Enter promo or referral code (optional)">
-            </label>
-            <div id="pricePreview" class="price-preview"></div>
-
-            <div class="checks">
-              <label class="check">
-                <input type="checkbox" id="terms" required>
-                <span>I agree to the service terms and understand that diagnostics identify likely causes based on symptoms, scan data, and testing performed during the appointment.</span>
-              </label>
-              <label class="check">
-                <input type="checkbox" id="paymentAgree" required>
-                <span>I understand that payment is required before the appointment is confirmed and that repairs are not included unless separately agreed upon.</span>
-              </label>
-              <label class="check">
-                <input type="checkbox" id="recording" required>
-                <span>I agree that interactions may be documented or recorded for service documentation, training, and quality purposes.</span>
-              </label>
-              <label class="check">
-                <input type="checkbox" id="safetyAgree" required>
-                <span>I understand service may be declined if the location is unsafe, inaccessible, or unsuitable for proper diagnostics.</span>
-              </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary" id="saveBookingBtn">Save Booking & Continue</button>
-<div class="mini-note">Your booking details will be saved first, then you can complete payment below.</div>
-<div class="booking-status" id="bookingStatus"></div>
-
-<div id="paypalSection" style="display:none; margin-top:16px;">
-  <div class="callout" style="margin-bottom:12px;">
-    Booking saved. Complete your payment below to confirm your appointment.
+  <div class="grid-2">
+    <label>
+      Full Name
+      <input type="text" id="fullName" placeholder="John Smith" required>
+    </label>
+    <label>
+      Phone Number
+      <input type="tel" id="phone" placeholder="(407) 555-1234" required>
+    </label>
   </div>
-  <div id="paypal-button-container"></div>
-</div>
+
+  <div class="grid-2">
+    <label>
+      Email Address
+      <input type="email" id="email" placeholder="name@email.com" required>
+    </label>
+    <label>
+      Service Needed
+      <select id="service" required>
+        <option value="">Select a service</option>
+        <option value="1. Check Engine Light Diagnosis">1. Check Engine Light Diagnosis</option>
+        <option value="2. Pre-Purchase Vehicle Inspection">2. Pre-Purchase Vehicle Inspection</option>
+        <option value="3. Vehicle Health Check">3. Vehicle Health Check</option>
+        <option value="4. Noise Diagnosis">4. Noise Diagnosis</option>
+        <option value="5. Other">5. Other</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="grid-2">
+    <label>
+      Vehicle Year / Make / Model
+      <input type="text" id="vehicle" placeholder="2016 Honda Civic" required>
+    </label>
+    <label>
+      Mileage
+      <input type="text" id="mileage" placeholder="124,000" required>
+    </label>
+  </div>
+
+  <div class="grid-2">
+    <label>
+      Preferred Date
+      <input type="date" id="date" required>
+    </label>
+    <label>
+      Preferred Time
+      <select id="time" required>
+        <option value="">Select a time</option>
+        <option value="1. Morning (8 AM – 11 AM)">1. Morning (8 AM – 11 AM)</option>
+        <option value="2. Midday (11 AM – 2 PM)">2. Midday (11 AM – 2 PM)</option>
+        <option value="3. Afternoon (2 PM – 5 PM)">3. Afternoon (2 PM – 5 PM)</option>
+        <option value="4. Evening (5 PM – 7 PM)">4. Evening (5 PM – 7 PM)</option>
+      </select>
+    </label>
+  </div>
+
+  <label>
+    Vehicle Location
+    <input type="text" id="location" placeholder="Saint Cloud, FL or full service address" required>
+  </label>
+
+  <label>
+    Describe the issue
+    <textarea id="issue" placeholder="Example: Check engine light came on yesterday and the car feels rough at idle." required></textarea>
+  </label>
+
+  <label>
+    Promo or Referral Code
+    <input type="text" id="promo" placeholder="Enter promo or referral code (optional)">
+  </label>
+
+  <div id="pricePreview" class="price-preview"></div>
+
+  <div class="checks">
+    <label class="check">
+      <input type="checkbox" id="terms" required>
+      <span>I agree to the service terms and understand that diagnostics identify likely causes based on symptoms, scan data, and testing performed during the appointment.</span>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="paymentAgree" required>
+      <span>I understand that payment is required before the appointment is confirmed and that repairs are not included unless separately agreed upon.</span>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="recording" required>
+      <span>I agree that interactions may be documented or recorded for service documentation, training, and quality purposes.</span>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="safetyAgree" required>
+      <span>I understand service may be declined if the location is unsafe, inaccessible, or unsuitable for proper diagnostics.</span>
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="saveBookingBtn">Save Booking & Continue</button>
+  <div class="mini-note">Your booking details will be saved first, then you can complete payment below.</div>
+  <div class="booking-status" id="bookingStatus"></div>
+
+  <div id="paypalSection" style="display:none; margin-top:16px;">
+    <div class="callout" style="margin-bottom:12px;">
+      Booking saved. Complete your payment below to confirm your appointment.
+    </div>
+    <div id="paypal-button-container"></div>
+  </div>
+</form>
 
         <div class="form-panel">
           <div class="eyebrow">Business details</div>
@@ -1084,210 +1086,225 @@
     </section>
   </main>
 
-  <footer>
+    <footer>
     <div class="container footer-bar">
       <div>© 2026 JJ Auto Rescue</div>
       <div>Diagnostics • Inspections • Professional reports</div>
     </div>
   </footer>
 
-<script>
-  const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
+  <script src="https://www.paypal.com/sdk/js?client-id=Aa5Idxa3LtmE3QOlkp_3Ez4_pq1utInL-hmo23oncVX2Y-roMK7xI_fAPcI6MnTwFCcPDb0-RYGaWS4d&currency=USD&intent=capture"></script>
 
-  const serviceSelect = document.getElementById("service");
-  const promoInput = document.getElementById("promo");
-  const pricePreview = document.getElementById("pricePreview");
-  const bookingStatus = document.getElementById("bookingStatus");
-  const paypalSection = document.getElementById("paypalSection");
+  <script>
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0jQnMcOjlT-ISEVOgn-wCsTHzGPpA1HXZLsMJ7B8IiQe0yg/formResponse";
 
-  let currentFinalPrice = 0;
-  let currentBookingCode = "";
-  let paypalRendered = false;
+    const serviceSelect = document.getElementById("service");
+    const promoInput = document.getElementById("promo");
+    const pricePreview = document.getElementById("pricePreview");
+    const bookingStatus = document.getElementById("bookingStatus");
+    const paypalSection = document.getElementById("paypalSection");
 
-  function getBasePrice(service) {
-    if (service.includes("Check Engine")) return 85;
-    if (service.includes("Pre-Purchase")) return 150;
-    if (service.includes("Vehicle Health")) return 75;
-    if (service.includes("Noise")) return 95;
-    return 0;
-  }
+    let currentFinalPrice = 0;
+    let currentBookingCode = "";
+    let paypalRendered = false;
 
-  function getFinalPrice(service, promo) {
-    const basePrice = getBasePrice(service);
-    let finalPrice = basePrice;
-
-    if (promo === "FIRST20") {
-      finalPrice = Math.max(basePrice - 20, 0);
+    function getBasePrice(service) {
+      if (service.includes("Check Engine")) return 85;
+      if (service.includes("Pre-Purchase")) return 150;
+      if (service.includes("Vehicle Health")) return 75;
+      if (service.includes("Noise")) return 95;
+      return 0;
     }
 
-    return finalPrice;
-  }
+    function getFinalPrice(service, promo) {
+      const basePrice = getBasePrice(service);
+      let finalPrice = basePrice;
 
-  function updatePrice() {
-    const service = serviceSelect.value;
-    const promo = promoInput.value.trim().toUpperCase();
-    const basePrice = getBasePrice(service);
-
-    if (!basePrice) {
-      pricePreview.innerHTML = "";
-      currentFinalPrice = 0;
-      return;
-    }
-
-    const finalPrice = getFinalPrice(service, promo);
-    currentFinalPrice = finalPrice;
-
-    if (finalPrice < basePrice) {
-      pricePreview.innerHTML = `
-        Service Price: <strong>$${basePrice}</strong><br>
-        Discount Applied: -$${basePrice - finalPrice}<br>
-        Estimated Price: <strong>$${finalPrice}</strong>
-      `;
-    } else {
-      pricePreview.innerHTML = `
-        Service Price: <strong>$${basePrice}</strong><br>
-        <span style="font-size:12px;color:#cfe8ff;">Enter a promo or referral code to see if a discount applies.</span>
-      `;
-    }
-  }
-
-  serviceSelect.addEventListener("change", updatePrice);
-  promoInput.addEventListener("input", updatePrice);
-
-  function generateBookingCode() {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const hh = String(now.getHours()).padStart(2, "0");
-    const min = String(now.getMinutes()).padStart(2, "0");
-    const ss = String(now.getSeconds()).padStart(2, "0");
-    return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
-  }
-
-  function renderPayPalButtons() {
-    if (paypalRendered) return;
-    paypalRendered = true;
-
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        const service = document.getElementById("service").value;
-        const promo = document.getElementById("promo").value.trim().toUpperCase();
-        const finalPrice = getFinalPrice(service, promo);
-
-        return actions.order.create({
-          purchase_units: [
-            {
-              description: service || "JJ Auto Rescue Diagnostic Service",
-              custom_id: currentBookingCode || "JJR-NO-CODE",
-              amount: {
-                currency_code: "USD",
-                value: finalPrice.toFixed(2)
-              }
-            }
-          ]
-        });
-      },
-
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          const payerName = details?.payer?.name?.given_name || "Customer";
-          bookingStatus.style.display = "block";
-          bookingStatus.textContent = `Payment completed successfully. Thank you, ${payerName}. Your booking reference is ${currentBookingCode}.`;
-
-          localStorage.setItem("jjrPaidOrderId", data.orderID || "");
-          localStorage.setItem("jjrPaidBookingCode", currentBookingCode || "");
-
-          setTimeout(() => {
-            window.location.href = "thank-you.html";
-          }, 1800);
-        });
-      },
-
-      onCancel: function() {
-        bookingStatus.style.display = "block";
-        bookingStatus.textContent = "Payment was cancelled. Your booking request is saved, but payment is still needed to confirm the appointment.";
-      },
-
-      onError: function(err) {
-        console.error(err);
-        bookingStatus.style.display = "block";
-        bookingStatus.textContent = "There was a PayPal error. Please try again.";
+      if (promo === "FIRST20") {
+        finalPrice = Math.max(basePrice - 20, 0);
       }
-    }).render("#paypal-button-container");
-  }
 
-  document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    bookingStatus.style.display = "block";
-    bookingStatus.textContent = "Saving your booking...";
-
-    const bookingCode = generateBookingCode();
-    currentBookingCode = bookingCode;
-
-    const fullName = document.getElementById("fullName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const vehicle = document.getElementById("vehicle").value.trim();
-    const mileage = document.getElementById("mileage").value.trim();
-    const service = document.getElementById("service").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const location = document.getElementById("location").value.trim();
-    const issue = document.getElementById("issue").value.trim();
-    const promo = document.getElementById("promo").value.trim().toUpperCase();
-
-    if (!service) {
-      bookingStatus.textContent = "Please select a service.";
-      return;
+      return finalPrice;
     }
 
-    currentFinalPrice = getFinalPrice(service, promo);
+    function updatePrice() {
+      const service = serviceSelect.value;
+      const promo = promoInput.value.trim().toUpperCase();
+      const basePrice = getBasePrice(service);
 
-    const formData = new FormData();
-    formData.append("entry.2104257763", bookingCode);
-    formData.append("entry.589811794", fullName);
-    formData.append("entry.1808340048", phone);
-    formData.append("entry.970185648", email);
-    formData.append("entry.213738138", vehicle);
-    formData.append("entry.947101800", mileage);
-    formData.append("entry.907399312", service);
-    formData.append("entry.1785913985", date);
-    formData.append("entry.1036450522", time);
-    formData.append("entry.949228142", location);
-    formData.append("entry.621408753", issue);
-    formData.append("entry.1282163118", promo);
-    formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
-    formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
+      if (!basePrice) {
+        pricePreview.innerHTML = "";
+        currentFinalPrice = 0;
+        return;
+      }
 
-    try {
-      await fetch(GOOGLE_FORM_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-      });
+      const finalPrice = getFinalPrice(service, promo);
+      currentFinalPrice = finalPrice;
 
-      localStorage.setItem("jjrBookingCode", bookingCode);
-      localStorage.setItem("jjrCustomerName", fullName);
-      localStorage.setItem("jjrService", service);
-      localStorage.setItem("jjrPromo", promo);
-      localStorage.setItem("jjrFinalPrice", String(currentFinalPrice));
-
-      bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Complete payment below.`;
-
-      paypalSection.style.display = "block";
-      renderPayPalButtons();
-
-      document.getElementById("saveBookingBtn").disabled = true;
-      document.getElementById("saveBookingBtn").textContent = "Booking Saved";
-    } catch (error) {
-      console.error(error);
-      bookingStatus.textContent = "There was a problem saving your booking. Please try again.";
+      if (finalPrice < basePrice) {
+        pricePreview.innerHTML = `
+          Service Price: <strong>$${basePrice}</strong><br>
+          Discount Applied: -$${basePrice - finalPrice}<br>
+          Estimated Price: <strong>$${finalPrice}</strong>
+        `;
+      } else {
+        pricePreview.innerHTML = `
+          Service Price: <strong>$${basePrice}</strong><br>
+          <span style="font-size:12px;color:#cfe8ff;">Enter a promo or referral code to see if a discount applies.</span>
+        `;
+      }
     }
-  });
 
-  updatePrice();
-</script>
+    serviceSelect.addEventListener("change", updatePrice);
+    promoInput.addEventListener("input", updatePrice);
+
+    function generateBookingCode() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const hh = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      const ss = String(now.getSeconds()).padStart(2, "0");
+      return `JJR-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
+    }
+
+    function renderPayPalButtons() {
+      if (paypalRendered) return;
+      paypalRendered = true;
+
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          const service = document.getElementById("service").value;
+          const promo = document.getElementById("promo").value.trim().toUpperCase();
+          const finalPrice = getFinalPrice(service, promo);
+
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: service || "JJ Auto Rescue Diagnostic Service",
+                custom_id: currentBookingCode || "JJR-NO-CODE",
+                amount: {
+                  currency_code: "USD",
+                  value: finalPrice.toFixed(2)
+                }
+              }
+            ]
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            const payerName = details?.payer?.name?.given_name || "Customer";
+            bookingStatus.style.display = "block";
+            bookingStatus.textContent = `Payment completed successfully. Thank you, ${payerName}. Your booking reference is ${currentBookingCode}.`;
+
+            localStorage.setItem("jjrPaidOrderId", data.orderID || "");
+            localStorage.setItem("jjrPaidBookingCode", currentBookingCode || "");
+
+            setTimeout(() => {
+              window.location.href = "thank-you.html";
+            }, 1800);
+          });
+        },
+
+        onCancel: function() {
+          bookingStatus.style.display = "block";
+          bookingStatus.textContent = "Payment was cancelled. Your booking request is saved, but payment is still needed to confirm the appointment.";
+        },
+
+        onError: function(err) {
+          console.error("PayPal error:", err);
+          bookingStatus.style.display = "block";
+          bookingStatus.textContent = "There was a PayPal error. Please try again.";
+        }
+      }).render("#paypal-button-container");
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      bookingStatus.style.display = "block";
+      bookingStatus.textContent = "Saving your booking...";
+
+      if (paypalSection) {
+        paypalSection.style.display = "none";
+      }
+
+      const bookingCode = generateBookingCode();
+      currentBookingCode = bookingCode;
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const vehicle = document.getElementById("vehicle").value.trim();
+      const mileage = document.getElementById("mileage").value.trim();
+      const service = document.getElementById("service").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const location = document.getElementById("location").value.trim();
+      const issue = document.getElementById("issue").value.trim();
+      const promo = document.getElementById("promo").value.trim().toUpperCase();
+
+      if (!service) {
+        bookingStatus.textContent = "Please select a service.";
+        return;
+      }
+
+      currentFinalPrice = getFinalPrice(service, promo);
+
+      const formData = new FormData();
+      formData.append("entry.2104257763", bookingCode);
+      formData.append("entry.589811794", fullName);
+      formData.append("entry.1808340048", phone);
+      formData.append("entry.970185648", email);
+      formData.append("entry.213738138", vehicle);
+      formData.append("entry.947101800", mileage);
+      formData.append("entry.907399312", service);
+      formData.append("entry.1785913985", date);
+      formData.append("entry.1036450522", time);
+      formData.append("entry.949228142", location);
+      formData.append("entry.621408753", issue);
+      formData.append("entry.1282163118", promo);
+      formData.append("entry.238171079", "I understand this is a diagnostic service and not a repair service. I agree that payment is required before the appointment is confirmed.");
+      formData.append("entry.282124255", "I understand that diagnostics may include photos, notes, or recordings for documentation and report purposes.");
+
+      try {
+        await fetch(GOOGLE_FORM_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        });
+
+        localStorage.setItem("jjrBookingCode", bookingCode);
+        localStorage.setItem("jjrCustomerName", fullName);
+        localStorage.setItem("jjrService", service);
+        localStorage.setItem("jjrPromo", promo);
+        localStorage.setItem("jjrFinalPrice", String(currentFinalPrice));
+
+        bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Complete payment below.`;
+
+        if (paypalSection) {
+          paypalSection.style.display = "block";
+        }
+
+        renderPayPalButtons();
+
+        document.getElementById("saveBookingBtn").disabled = true;
+        document.getElementById("saveBookingBtn").textContent = "Booking Saved";
+
+      } catch (error) {
+        console.error("Booking save error:", error);
+        bookingStatus.style.display = "block";
+        bookingStatus.textContent = "There was a problem saving your booking. Please try again.";
+
+        if (paypalSection) {
+          paypalSection.style.display = "none";
+        }
+      }
+    });
+
+    updatePrice();
+  </script>
 </body>
 </html>
