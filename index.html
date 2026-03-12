@@ -1154,6 +1154,7 @@ promoInput.addEventListener("input", updatePrice);
       const time = document.getElementById("time").value;
       const location = document.getElementById("location").value.trim();
       const issue = document.getElementById("issue").value.trim();
+      const promo = document.getElementById("promo").value.trim().toUpperCase();
 
       if (!service) {
         statusEl.textContent = "Please select a service.";
