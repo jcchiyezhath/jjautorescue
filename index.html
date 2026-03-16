@@ -937,22 +937,22 @@
   <div class="grid-2">
     <label>
       Full Name
-      <input type="text" id="fullName" placeholder="John Smith" required>
+      <input type="text" id="fullName" name="fullName" placeholder="John Smith" required>
     </label>
     <label>
       Phone Number
-      <input type="tel" id="phone" placeholder="(407) 555-1234" required>
+      <input type="tel" id="phone" name="phone" placeholder="(407) 555-1234" required>
     </label>
   </div>
 
   <div class="grid-2">
     <label>
       Email Address
-      <input type="email" id="email" placeholder="name@email.com" required>
+      <input type="email" id="email" name="email" placeholder="name@email.com" required>
     </label>
     <label>
       Service Needed
-      <select id="service" required>
+      <select id="service" name="service" required>
         <option value="">Select a service</option>
         <option value="1. Check Engine Light Diagnosis">1. Check Engine Light Diagnosis</option>
         <option value="2. Pre-Purchase Vehicle Inspection">2. Pre-Purchase Vehicle Inspection</option>
@@ -966,22 +966,22 @@
   <div class="grid-2">
     <label>
       Vehicle Year / Make / Model
-      <input type="text" id="vehicle" placeholder="2016 Honda Civic" required>
+      <input type="text" id="vehicle" name="vehicle" placeholder="2016 Honda Civic" required>
     </label>
     <label>
       Mileage
-      <input type="text" id="mileage" placeholder="124,000" required>
+      <input type="text" id="mileage" name="mileage" placeholder="124,000" required>
     </label>
   </div>
 
   <div class="grid-2">
     <label>
       Preferred Date
-      <input type="date" id="date" required>
+      <input type="date" id="date" name="date" required>
     </label>
     <label>
       Preferred Time
-      <select id="time" required>
+      <select id="time" name="time" required>
         <option value="">Select a time</option>
         <option value="1. Morning (8 AM – 11 AM)">1. Morning (8 AM – 11 AM)</option>
         <option value="2. Midday (11 AM – 2 PM)">2. Midday (11 AM – 2 PM)</option>
@@ -993,17 +993,17 @@
 
   <label>
     Vehicle Location
-    <input type="text" id="location" placeholder="Saint Cloud, FL or full service address" required>
+    <input type="text" id="location" name="location" placeholder="Saint Cloud, FL or full service address" required>
   </label>
 
   <label>
     Describe the issue
-    <textarea id="issue" placeholder="Example: Check engine light came on yesterday and the car feels rough at idle." required></textarea>
+    <textarea id="issue" name="issue" placeholder="Example: Check engine light came on yesterday and the car feels rough at idle." required></textarea>
   </label>
 
   <label>
     Promo or Referral Code
-    <input type="text" id="promo" placeholder="Enter promo or referral code (optional)">
+    <input type="text" id="promo" name="promo" placeholder="Enter promo or referral code (optional)">
   </label>
 
   <div id="pricePreview" class="price-preview"></div>
