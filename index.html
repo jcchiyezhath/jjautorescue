@@ -1283,6 +1283,37 @@
 
         bookingStatus.textContent = `Booking saved. Your booking code is ${bookingCode}. Complete payment below.`;
 
+        const emailFormData = new FormData();
+emailFormData.append("fullName", fullName);
+emailFormData.append("phone", phone);
+emailFormData.append("email", email);
+emailFormData.append("vehicle", vehicle);
+emailFormData.append("mileage", mileage);
+emailFormData.append("service", service);
+emailFormData.append("date", date);
+emailFormData.append("time", time);
+emailFormData.append("location", location);
+emailFormData.append("issue", issue);
+emailFormData.append("promo", promo);
+emailFormData.append("bookingCode", bookingCode);
+emailFormData.append("_subject", "New JJ Auto Rescue Booking");
+emailFormData.append("_captcha", "false");
+
+fetch("https://formsubmit.co/ajax/jjautorescue@gmail.com", {
+  method: "POST",
+  headers: {
+    Accept: "application/json"
+  },
+  body: emailFormData
+})
+.then(response => response.json())
+.then(data => {
+  console.log("FormSubmit email sent:", data);
+})
+.catch(error => {
+  console.error("FormSubmit email error:", error);
+});
+
         if (paypalSection) {
           paypalSection.style.display = "block";
         }
